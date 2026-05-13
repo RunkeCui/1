@@ -1,0 +1,77 @@
+# 安装
+install.packages("ggplot2")
+install.packages("dplyr")
+
+# 加载
+library(ggplot2)
+library(dplyr)
+library(DiagrammeR)
+
+# 图4.3 试次类型主效应图
+# 数据：均值 + 标准误 SE（你可以直接改数字）
+df43 <- data.frame(
+  试次类型 = c("事件试次", "非事件试次"),
+  时间扭曲程度 = c(0.503, 0.453),
+  se = c(0.020, 0.018)  # 标准误
+)
+# 画图
+ggplot(df43, aes(x = 试次类型, y = 时间扭曲程度)) +
+  geom_col(fill = "steelblue", width = 0.6) +
+  geom_errorbar(
+    aes(ymin = 时间扭曲程度 - se, ymax = 时间扭曲程度 + se),
+    width = 0.1,
+    linewidth = 0.8
+  ) +
+  ylim(0, 0.7) +
+  labs(
+    title = "图4.3 试次类型主效应图",
+    x = "试次类型",
+    y = "时间扭曲程度"
+  ) +
+  theme_bw(base_size = 12) +
+  theme(plot.title = element_text(hjust = 0.5))
+# 保存高清图
+ggsave("图4.3_带误差线.png", width = 6, height = 4, dpi = 300)
+
+# 图4.4 图片对类型主效应图
+# 数据：均值 + 标准误 SE
+df44 <- data.frame(
+  图片对类型 = c("消极", "中性", "积极"),
+  时间扭曲程度 = c(0.42, 0.475, 0.54),
+  se = c(0.019, 0.021, 0.023)  # 标准误
+)
+# 画图
+ggplot(df44, aes(x = 图片对类型, y = 时间扭曲程度)) +
+  geom_col(fill = "forestgreen", width = 0.6) +
+  geom_errorbar(
+    aes(ymin = 时间扭曲程度 - se, ymax = 时间扭曲程度 + se),
+    width = 0.1,
+    linewidth = 0.8
+  ) +
+  ylim(0, 0.7) +
+  labs(
+    title = "图4.4 图片对类型主效应图",
+    x = "图片对类型",
+    y = "时间扭曲程度"
+  ) +
+  theme_bw(base_size = 12) +
+  theme(plot.title = element_text(hjust = 0.5))
+# 保存高清图
+ggsave("图4.4_带误差线.png", width = 6, height = 4, dpi = 300)
+
+# 图4.5 试次类型 × 图片对类型交互图
+df45 <- data.frame(
+  试次类型 = rep(c("事件试次","非事件试次"), each=3),
+  图片对类型 = rep(c("消极","中性","积极"), 2),
+  时间扭曲程度 = c(0.40, 0.47, 0.64, 0.44, 0.48, 0.44)
+)
+
+ggplot(df45, aes(x=试次类型, y=时间扭曲程度, color=图片对类型, group=图片对类型)) +
+  geom_line(linewidth=1) + geom_point(size=3) +
+  ylim(0, 0.7) +
+  labs(title="图4.5 试次类型×图片对类型交互效应图",
+       x="试次类型", y="时间扭曲程度", color="图片对类型") +
+  theme_bw(base_size=12) +
+  theme(plot.title = element_text(hjust=0.5))
+
+ggsave("图4.5_交互效应图.png", width=7, height=4, dpi=300)
