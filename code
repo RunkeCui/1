@@ -75,3 +75,80 @@ ggplot(df45, aes(x=试次类型, y=时间扭曲程度, color=图片对类型, gr
   theme(plot.title = element_text(hjust=0.5))
 
 ggsave("图4.5_交互效应图.png", width=7, height=4, dpi=300)
+
+# 图4.8 听觉事件类型主效应图
+df48 <- data.frame(
+  听觉事件类型 = c("积极事件", "消极事件"),
+  时间扭曲程度 = c(0.475, 0.5625),  # 均值
+  se = c(0.018, 0.020)  # 标准误（已根据SD计算）
+)
+# 画图
+ggplot(df48, aes(x = 听觉事件类型, y = 时间扭曲程度)) +
+  geom_col(fill = "steelblue", width = 0.6) +
+  geom_errorbar(
+    aes(ymin = 时间扭曲程度 - se, ymax = 时间扭曲程度 + se),
+    width = 0.1, linewidth = 0.8
+  ) +
+  ylim(0, 0.7) +
+  labs(
+    title = "图4.8 听觉事件类型主效应图",
+    x = "听觉事件类型",
+    y = "时间扭曲程度"
+  ) +
+  theme_bw(base_size = 12) +
+  theme(plot.title = element_text(hjust = 0.5))
+# 保存高清图
+ggsave("图4.8_听觉事件主效应.png", width = 6, height = 4, dpi = 300)
+
+# 图4.9 图片对组合类型主效应图
+df49 <- data.frame(
+  图片组合 = c("积极-中性", "积极-消极", "中性-积极", "消极-积极"),
+  时间扭曲程度 = c(0.535, 0.540, 0.495, 0.505),
+  se = c(0.022, 0.021, 0.020, 0.019)
+)
+# 画图
+ggplot(df49, aes(x = 图片组合, y = 时间扭曲程度)) +
+  geom_col(fill = "forestgreen", width = 0.6) +
+  geom_errorbar(
+    aes(ymin = 时间扭曲程度 - se, ymax = 时间扭曲程度 + se),
+    width = 0.1, linewidth = 0.8
+  ) +
+  ylim(0, 0.7) +
+  labs(
+    title = "图4.9 图片对组合类型主效应图",
+    x = "图片对组合类型",
+    y = "时间扭曲程度"
+  ) +
+  theme_bw(base_size = 12) +
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    axis.text.x = element_text(angle = 15, hjust = 1)
+  )
+ggsave("图4.9_图片组合主效应.png", width = 7, height = 4, dpi = 300)
+
+# 图4.10 听觉事件 × 图片组合交互效应图
+df410 <- data.frame(
+  听觉事件 = rep(c("积极事件", "消极事件"), each = 4),
+  图片组合 = rep(c("积极-中性", "积极-消极", "中性-积极", "消极-积极"), 2),
+  时间扭曲程度 = c(0.47, 0.49, 0.48, 0.46,
+                    0.60, 0.59, 0.51, 0.55)
+)
+# 画图
+ggplot(df410, aes(x = 图片组合, y = 时间扭曲程度, 
+                  color = 听觉事件, group = 听觉事件)) +
+  geom_line(linewidth = 1) +
+  geom_point(size = 3) +
+  ylim(0, 0.7) +
+  labs(
+    title = "图4.10 听觉事件×图片组合交互效应图",
+    x = "图片对组合类型",
+    y = "时间扭曲程度",
+    color = "听觉事件类型"
+  ) +
+  theme_bw(base_size = 12) +
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    axis.text.x = element_text(angle = 20, hjust = 1)
+  )
+# 保存高清版本
+ggsave("图4.10_交互效应图_无误差线.png", width = 8, height = 4, dpi = 300)
